@@ -1,0 +1,49 @@
+import os
+import sys
+module_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.abspath(os.path.join(module_dir, '..'))
+sys.path.append(project_dir)
+
+from dijkstras import dijkstras
+
+def test_dijkstras():
+    class Vertex:
+        def __init__(self, name):
+            self.name = name
+            self.adjacent = {}
+
+    class WeightedGraph:
+        def __init__(self):
+            self.vertices = {}
+
+        def add_vertex(self, vertex):
+            self.vertices[vertex.name] = vertex
+
+    graph = WeightedGraph()
+
+    v0 = Vertex('A')
+    v1 = Vertex('B')
+    v2 = Vertex('C')
+    v3 = Vertex('D')
+
+    v0.adjacent = {'B': 1, 'C': 4}
+    v1.adjacent = {'A': 1, 'C': 2, 'D': 5}
+    v2.adjacent = {'A': 4, 'B': 2, 'D': 1}
+    v3.adjacent = {'B': 5, 'C': 1}
+
+    graph.add_vertex(v0)
+    graph.add_vertex(v1)
+    graph.add_vertex(v2)
+    graph.add_vertex(v3)
+
+    assert dijkstras(graph, 'A', 'D') == ['A', 'B', 'C', 'D']
+    assert dijkstras(graph, 'B', 'D') == ['B', 'C', 'D']
+
+    assert dijkstras(graph, 'A', 'C') == ['A', 'B', 'C']
+    assert dijkstras(graph, 'B', 'C') == ['B', 'C']
+
+    assert dijkstras(graph, 'A', 'B') == ['A', 'B']
+    assert dijkstras(graph, 'B', 'A') == ['B', 'A']
+
+    assert dijkstras(graph, 'C', 'D') == ['C', 'D']
+    assert dijkstras(graph, 'D', 'A') == ['D', 'B', 'A']

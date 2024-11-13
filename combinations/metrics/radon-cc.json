@@ -1,0 +1,1 @@
+{"combinations.py": [{"type": "function", "rank": "A", "col_offset": 0, "name": "combinations_of_phone_input", "endline": 44, "lineno": 14, "complexity": 5, "closures": []}, {"type": "function", "rank": "A", "col_offset": 0, "name": "combinations_of_word", "endline": 12, "lineno": 1, "complexity": 3, "closures": []}]}

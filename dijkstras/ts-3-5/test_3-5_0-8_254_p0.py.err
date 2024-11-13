@@ -1,0 +1,41 @@
+import os
+import sys
+module_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.abspath(os.path.join(module_dir, '..'))
+sys.path.append(project_dir)
+
+from dijkstras import dijkstras
+
+class TestDijkstras:
+    
+    def test_shortest_path_found(self):
+        weighted_graph = self.create_weighted_graph()
+        src = 'A'
+        dst = 'E'
+        path = dijkstras(weighted_graph, src, dst)
+        assert path == ['A', 'B', 'C', 'D', 'E']
+    
+    def test_start_and_end_same(self):
+        weighted_graph = self.create_weighted_graph()
+        src = 'A'
+        dst = 'A'
+        path = dijkstras(weighted_graph, src, dst)
+        assert path == ['A']
+    
+    def test_no_path_available(self):
+        weighted_graph = self.create_weighted_graph()
+        src = 'A'
+        dst = 'F'
+        path = dijkstras(weighted_graph, src, dst)
+        assert path == []
+        
+    # Helper function to create a weighted graph for testing
+    def create_weighted_graph(self):
+        return {
+            'A': {'B': 1},
+            'B': {'C': 2, 'D': 3},
+            'C': {'D': 1},
+            'D': {'E': 2},
+            'E': {},
+            'F': {}
+        }

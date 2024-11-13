@@ -1,0 +1,33 @@
+import os
+import sys
+sys.path.append(os.path.abspath('..'))
+from priority_queue1 import PriorityQueue
+
+def test_add_task():
+    pq = PriorityQueue()
+    pq.add_task('task1', 5)
+    assert pq.pq == [[5, 0, 'task1']]
+    assert pq.mapper == {'task1': [5, 0, 'task1']}
+
+def test_remove_task():
+    pq = PriorityQueue()
+    pq.add_task('task1', 5)
+    pq.remove_task('task1')
+    assert pq.pq == []
+    assert pq.mapper == {}
+
+def test_set_priority():
+    pq = PriorityQueue()
+    pq.add_task('task1', 5)
+    pq.set_priority('task1', 10)
+    assert pq.pq == [[10, 0, 'task1']]
+    assert pq.mapper == {'task1': [10, 0, 'task1']}
+
+def test_pop_task():
+    pq = PriorityQueue()
+    pq.add_task('task1', 5)
+    pq.add_task('task2', 3)
+    task = pq.pop_task()
+    assert task == 'task2'
+    assert pq.pq == [[5, 0, 'task1']]
+    assert pq.mapper == {'task1': [5, 0, 'task1']}

@@ -1,0 +1,59 @@
+import os
+import sys
+module_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.abspath(os.path.join(module_dir, '..'))
+sys.path.append(project_dir)
+
+from dijkstras import dijkstras
+
+def test_dijkstras_shortest_path_found():
+    weighted_graph = WeightedGraph()
+    weighted_graph.vertices = {
+        'A': Vertex('A', {'B': 1, 'C': 4}),
+        'B': Vertex('B', {'A': 1, 'C': 2, 'D': 5}),
+        'C': Vertex('C', {'A': 4, 'B': 2, 'D': 1}),
+        'D': Vertex('D', {'B': 5, 'C': 1}),
+    }
+    src = 'A'
+    dst = 'D'
+    
+    result = dijkstras(weighted_graph, src, dst)
+    
+    assert result == ['A', 'B', 'C', 'D']
+
+def test_dijkstras_no_path_found():
+    weighted_graph = WeightedGraph()
+    weighted_graph.vertices = {
+        'A': Vertex('A', {'B': 1}),
+        'B': Vertex('B', {'A': 1}),
+        'C': Vertex('C', {'D': 2}),
+        'D': Vertex('D', {'C': 2}),
+    }
+    src = 'A'
+    dst = 'D'
+    
+    result = dijkstras(weighted_graph, src, dst)
+    
+    assert result == ['No path found']
+
+def test_dijkstras_same_source_and_destination():
+    weighted_graph = WeightedGraph()
+    weighted_graph.vertices = {
+        'A': Vertex('A', {'B': 1}),
+        'B': Vertex('B', {'A': 1}),
+    }
+    src = 'A'
+    dst = 'A'
+    
+    result = dijkstras(weighted_graph, src, dst)
+    
+    assert result == ['A']
+
+class WeightedGraph:
+    def __init__(self):
+        self.vertices = {}
+
+class Vertex:
+    def __init__(self, name, adjacent):
+        self.name = name
+        self.adjacent = adjacent

@@ -1,0 +1,91 @@
+import os
+import sys
+module_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.abspath(os.path.join(module_dir, '..'))
+sys.path.append(project_dir)
+
+from dijkstras import dijkstras
+
+def test_dijkstras_basic():
+    class Vertex:
+        def __init__(self, name):
+            self.name = name
+            self.adjacent = {}
+    
+    class WeightedGraph:
+        def __init__(self):
+            self.vertices = {}
+    
+    graph = WeightedGraph()
+    
+    A = Vertex('A')
+    B = Vertex('B')
+    C = Vertex('C')
+    D = Vertex('D')
+    
+    A.adjacent[B] = 1
+    A.adjacent[C] = 4
+    B.adjacent[C] = 2
+    B.adjacent[D] = 5
+    C.adjacent[D] = 1
+    
+    graph.vertices = {'A': A, 'B': B, 'C': C, 'D': D}
+    
+    assert dijkstras(graph, 'A', 'D') == ['A', 'B', 'C', 'D']
+    assert dijkstras(graph, 'A', 'B') == ['A', 'B']
+    assert dijkstras(graph, 'A', 'C') == ['A', 'C']
+
+def test_dijkstras_empty_graph():
+    class Vertex:
+        def __init__(self, name):
+            self.name = name
+            self.adjacent = {}
+    
+    class WeightedGraph:
+        def __init__(self):
+            self.vertices = {}
+    
+    graph = WeightedGraph()
+    
+    assert dijkstras(graph, 'A', 'B') == []
+
+def test_dijkstras_unreachable_destination():
+    class Vertex:
+        def __init__(self, name):
+             self.name = name
+             self.adjacent = {}
+    
+    class WeightedGraph:
+        def __init__(self):
+            self.vertices = {}
+    
+    graph = WeightedGraph()
+    
+    A = Vertex('A')
+    B = Vertex('B')
+    C = Vertex('C')
+    
+    A.adjacent[B] = 1
+    B.adjacent[C] = 2
+    
+    graph.vertices = {'A': A, 'B': B, 'C': C}
+    
+    assert dijkstras(graph, 'A', 'C') == []
+
+def test_dijkstras_same_source_destination():
+    class Vertex:
+        def __init__(self, name):
+            self.name = name
+            self.adjacent = {}
+    
+    class WeightedGraph:
+        def __init__(self):
+            self.vertices = {}
+    
+    graph = WeightedGraph()
+    
+    A = Vertex('A')
+    
+    graph.vertices = {'A': A}
+    
+    assert dijkstras(graph, 'A', 'A') == ['A']

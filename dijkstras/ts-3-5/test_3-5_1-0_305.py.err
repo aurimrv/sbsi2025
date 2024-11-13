@@ -1,0 +1,31 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from dijkstras import dijkstras
+import pytest
+@pytest.mark.timeout(5)
+def test_dijkstras():
+    class WeightedGraph:
+        def __init__(self, vertices):
+            self.vertices = vertices
+
+    class Vertex:
+        def __init__(self, adjacent):
+            self.adjacent = adjacent
+
+    vertices = {
+        'A': Vertex({'B': 5, 'C': 1}),
+        'B': Vertex({'A': 5, 'C': 2}),
+        'C': Vertex({'B': 2, 'D': 4}),
+        'D': Vertex({'C': 4, 'E': 3}),
+        'E': Vertex({'D': 3})
+    }
+
+    weighted_graph = WeightedGraph(vertices)
+
+    assert dijkstras(weighted_graph, 'A', 'E') == ['A', 'C', 'D', 'E']
+    assert dijkstras(weighted_graph, 'A', 'B') == ['A', 'C', 'B']
+    assert dijkstras(weighted_graph, 'B', 'E') == ['B', 'C', 'D', 'E']
+    assert dijkstras(weighted_graph, 'C', 'D') == ['C', 'D']
+    assert dijkstras(weighted_graph, 'D', 'A') == ['D', 'C', 'A']

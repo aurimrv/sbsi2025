@@ -1,0 +1,1 @@
+{"fibonacci.py": [{"type": "function", "rank": "A", "col_offset": 0, "lineno": 1, "endline": 22, "name": "fibonacci_dp", "complexity": 3, "closures": []}, {"type": "function", "rank": "A", "col_offset": 0, "lineno": 24, "endline": 41, "name": "fibonacci_recursive", "complexity": 2, "closures": []}]}

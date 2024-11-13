@@ -1,0 +1,53 @@
+import os
+import sys
+import pytest
+
+module_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.abspath(os.path.join(module_dir, '..'))
+sys.path.append(project_dir)
+
+from dijkstras import dijkstras
+
+class WeightedGraph:
+    def __init__(self, vertices):
+        self.vertices = vertices
+
+class Vertex:
+    def __init__(self, adjacent):
+        self.adjacent = adjacent
+
+def test_dijkstras_simple():
+    vertex_a = Vertex({"b": 7, "c": 9})
+    vertex_b = Vertex({"a": 7, "c": 10})
+    vertex_c = Vertex({"a": 9, "b": 10})
+    
+    weighted_graph = WeightedGraph({"a": vertex_a, "b": vertex_b, "c": vertex_c})
+    
+    assert dijkstras(weighted_graph, 'a', 'c') == ['a', 'c']
+
+def test_dijkstras_no_path():
+    vertex_a = Vertex({"b": 7, "c": 9})
+    vertex_b = Vertex({"a": 7, "c": 10})
+    vertex_c = Vertex({"a": 9, "b": 10})
+    
+    weighted_graph = WeightedGraph({"a": vertex_a, "b": vertex_b, "c": vertex_c})
+    
+    assert dijkstras(weighted_graph, 'b', 'c') == []
+
+def test_dijkstras_complex_path():
+    vertex_a = Vertex({"b": 7, "c": 9})
+    vertex_b = Vertex({"a": 7, "c": 4})
+    vertex_c = Vertex({"a": 9, "b": 4})
+    
+    weighted_graph = WeightedGraph({"a": vertex_a, "b": vertex_b, "c": vertex_c})
+    
+    assert dijkstras(weighted_graph, 'a', 'b') == ['a', 'c', 'b']
+
+def test_dijkstras_same_source_dest():
+    vertex_a = Vertex({"b": 7, "c": 9})
+    vertex_b = Vertex({"a": 7, "c": 10})
+    vertex_c = Vertex({"a": 9, "b": 10})
+    
+    weighted_graph = WeightedGraph({"a": vertex_a, "b": vertex_b, "c": vertex_c})
+    
+    assert dijkstras(weighted_graph, 'a', 'a') == ['a']

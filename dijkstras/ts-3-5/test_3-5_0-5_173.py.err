@@ -1,0 +1,42 @@
+import os
+import sys
+module_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.abspath(os.path.join(module_dir, '..'))
+sys.path.append(project_dir)
+
+from dijkstras import dijkstras
+
+class TestDijkstras:
+    def test_dijkstras_shortest_path(self):
+        weighted_graph = WeightedGraph()
+        # Add vertices and edges to the graph for testing
+        src = 'A'
+        dst = 'D'
+        expected_path = ['A', 'B', 'D']  # Expected shortest path from A to D
+        assert dijkstras(weighted_graph, src, dst) == expected_path
+
+    def test_dijkstras_same_source_dest(self):
+        weighted_graph = WeightedGraph()
+        # Add vertices and edges to the graph for testing
+        src = 'A'
+        dst = 'A'
+        expected_path = ['A']  # Expected shortest path from A to A (same source and destination)
+        assert dijkstras(weighted_graph, src, dst) == expected_path
+
+    def test_dijkstras_unreachable_dest(self):
+        weighted_graph = WeightedGraph()
+        # Add vertices and edges to the graph for testing
+        src = 'A'
+        dst = 'E'  # Destination that is not reachable from source A
+        expected_path = []  # Expected empty path when destination is unreachable
+        assert dijkstras(weighted_graph, src, dst) == expected_path
+
+    def test_dijkstras_no_edges(self):
+        weighted_graph = WeightedGraph()
+        # Add vertices without any edges for testing
+        src = 'A'
+        dst = 'B'
+        expected_path = []  # Expected empty path when there are no edges in the graph
+        assert dijkstras(weighted_graph, src, dst) == expected_path
+
+    # Add more test cases for other scenarios and edge cases as needed
